@@ -1,0 +1,8 @@
+# Jetbrains IDE
+.idea/
+
+# Node modules
+node_modules
+
+# Built from webpack builds
+public_html/dist/
