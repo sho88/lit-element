@@ -58,7 +58,7 @@ export const event: any = (key?: string) => {
   return (target: any, methodName: string, propertyDescriptor: PropertyDescriptor) => {
     const original: Function = propertyDescriptor.value;
     propertyDescriptor.value = function (event: any, ...args: any) {
-      return key ? original.call(target, event[key], args) : original.call(target, event.detail, args);
+      return key ? original.call(this, event[key], args) : original.call(this, event.detail, args);
     }
   };
 }

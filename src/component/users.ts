@@ -1,3 +1,4 @@
+import { style } from './users.style';
 import { customElement, html, property } from 'lit-element';
 import { event, service, UIElement, useState } from './../util/decorators';
 import { UserService } from './../service/user';
@@ -9,8 +10,16 @@ export class Application extends UIElement {
   @service(UserService)
   userService!: UserService;
 
+  @property({ type: Number })
+  date: number = Date.now();
+
   @property({ type: Array })
   users: Array<any> = [];
+
+  @property({ type: Object })
+  selected: any;
+
+  static styles = [style];
 
   constructor() {
     super();
@@ -30,22 +39,16 @@ export class Application extends UIElement {
   render() {
     return html`
       <div>
-        ${this.users.map(user => html`
-          <user-component
-            .data="${user}"
-            @user-click="${this.onUserClick}"></user-component>
-        `)}
+        ${this.selected ? html`<user-component .data=${this.selected} .selected="${true}"></user-component>` : ''}
+        ${this.users.map(user => html`<user-component .data="${user}" @user-click="${this.onUserClick}"></user-component>`)}
       </div>
     `;
   }
 
-  // events go here...
+  // events go here
 
   @event()
   onUserClick(user: any) {
-    this.userService.getUser(user.id).then(
-      user => console.log(user),
-      error => console.error(error)
-    );
+    this.selected = user;
   }
 }

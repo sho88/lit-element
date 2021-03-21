@@ -1,4 +1,6 @@
-import { css, customElement, html, property } from 'lit-element';
+import { style } from './user.style';
+import { classMap } from 'lit-html/directives/class-map';
+import { customElement, html, property } from 'lit-element';
 import { customEmit, UIElement, useState } from './../util/decorators';
 
 @customElement('user-component')
@@ -8,16 +10,18 @@ export class UsersComponent extends UIElement {
   @property({ type: Object })
   data: any = null;
 
-  @property({ type: Number })
-  date: number = Date.now();
+  @property({ type: Boolean })
+  selected: boolean = false;
 
-  static styles = css`
-    pre { background: #f1f1f1; cursor: pointer; padding: 10px; }
-    small { color: #aaaaaa; display: block; }
-  `;
+  static styles = [style];
 
   render() {
-    return html`<pre @click="${this.onClick}">${JSON.stringify(this.data, null, 2)}</pre>`;
+    return html`
+      <div @click="${this.onClick}" class="${classMap({ selected: this.selected })}">
+        <h4>${this.data.name}</h4>
+        <p>${this.data.email}</p>
+      </div>
+    `;
   }
 
   // events go here -----------------------------------------------------------
